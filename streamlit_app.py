@@ -3,8 +3,8 @@ import streamlit as st
 import joblib
 import pandas as pd
 
-st.set_page_config(page_title="Heart Disease Prediction")
-st.title("Heart Disease Prediction")
+st.set_page_config(page_title="HEART DISEASE PREDICTION")
+st.title("HEART DISEASE PREDICTION")
 
 DRIVE_IDS = {
     "LOGISTIC REGRESSION": "1ktl6rV0aW9iRx2vjTSXJ7BwKvk0LnPQu",
