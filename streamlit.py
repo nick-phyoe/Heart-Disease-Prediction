@@ -1,5 +1,3 @@
-
-
 import streamlit as st
 import pandas as pd
 import numpy as np
@@ -54,45 +52,45 @@ FEATURES = ['age', 'sex', 'cp', 'trestbps', 'chol', 'fbs', 'restecg',
             'thalach', 'exang', 'oldpeak', 'slope', 'ca', 'thal']
 
 # Optional: load dataset to compute evaluation scores
-st.markdown("### Evaluation dataset (optional)")
-uploaded = st.file_uploader("Upload CSV with same columns (target column 'target')", type=['csv'])
-df = None
-if uploaded is not None:
+# st.markdown("### Evaluation dataset (optional)")
+# uploaded = st.file_uploader("Upload CSV with same columns (target column 'target')", type=['csv'])
+# df = None
+# if uploaded is not None:
     df = pd.read_csv(uploaded)
-else:
-    if os.path.exists(DEFAULT_DATA_CSV):
-        try:
-            df = pd.read_csv(DEFAULT_DATA_CSV)
-            st.info(f"Loaded default dataset from {DEFAULT_DATA_CSV}")
-        except Exception as e:
-            st.warning(f"Could not load default CSV: {e}")
+# else:
+#    if os.path.exists(DEFAULT_DATA_CSV):
+#       try:
+#            df = pd.read_csv(DEFAULT_DATA_CSV)
+#            st.info(f"Loaded default dataset from {DEFAULT_DATA_CSV}")
+#        except Exception as e:
+#            st.warning(f"Could not load default CSV: {e}")
 
-scores = {}
-if df is not None:
-    if 'target' not in df.columns:
+# scores = {}
+# if df is not None:
+#    if 'target' not in df.columns:
         st.error("Dataset must include a 'target' column.")
-    else:
-        missing = [c for c in FEATURES if c not in df.columns]
-        if missing:
-            st.error(f"Dataset is missing required columns: {missing}")
-        else:
-            X = df[FEATURES]
-            y = df['target']
-            X_train, X_test, y_train, y_test = train_test_split(X, y, test_size=0.2, random_state=42, stratify=y if len(y.unique())>1 else None)
-            X_test_scaled = scaler.transform(X_test)
+#    else:
+#        missing = [c for c in FEATURES if c not in df.columns]
+#        if missing:
+#            st.error(f"Dataset is missing required columns: {missing}")
+#        else:
+#            X = df[FEATURES]
+#            y = df['target']
+#            X_train, X_test, y_train, y_test = train_test_split(X, y, test_size=0.2, random_state=42, stratify=y if len(y.unique())>1 else None)
+#            X_test_scaled = scaler.transform(X_test)
 
-            def metrics(model, Xs, ys):
-                yp = model.predict(Xs)
-                return {
-                    'accuracy': accuracy_score(ys, yp),
-                    'precision': precision_score(ys, yp, zero_division=0),
-                    'recall': recall_score(ys, yp, zero_division=0),
-                    'f1': f1_score(ys, yp, zero_division=0)
+#            def metrics(model, Xs, ys):
+#                yp = model.predict(Xs)
+#                return {
+#                    'accuracy': accuracy_score(ys, yp),
+#                    'precision': precision_score(ys, yp, zero_division=0),
+#                    'recall': recall_score(ys, yp, zero_division=0),
+#                    'f1': f1_score(ys, yp, zero_division=0)
                 }
 
-            scores['Logistic Regression'] = metrics(lr, X_test_scaled, y_test)
-            scores['SVM'] = metrics(svm, X_test_scaled, y_test)
-            scores['Random Forest'] = metrics(rf, X_test_scaled, y_test)
+#            scores['Logistic Regression'] = metrics(lr, X_test_scaled, y_test)
+#            scores['SVM'] = metrics(svm, X_test_scaled, y_test)
+#            scores['Random Forest'] = metrics(rf, X_test_scaled, y_test)
 
 # Model selection
 model_choice = st.selectbox("Select model", ["Logistic Regression", "SVM", "Random Forest"])
