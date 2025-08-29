@@ -14,7 +14,6 @@ MODEL_DIR = '/content/drive/MyDrive/Saved Models'
 LR_FILE = os.path.join(MODEL_DIR, 'logistic_regression.h5')
 SVM_FILE = os.path.join(MODEL_DIR, 'svm.h5')
 RF_FILE = os.path.join(MODEL_DIR, 'random_forest.h5')
-SCALER_FILE = os.path.join(MODEL_DIR, 'scaler.h5')
 
 DEFAULT_DATA_CSV = '/content/drive/MyDrive/Heart Disease Prediction.csv'
 
@@ -30,22 +29,20 @@ def try_load(path):
         st.error(f"Failed to load {path}: {e}")
         return None
 
-with st.expander("Load models from remembered path"):
+with st.expander("Load models from path"):
     st.write("Expected files:")
     st.write(f"- {LR_FILE}")
     st.write(f"- {SVM_FILE}")
     st.write(f"- {RF_FILE}")
-    st.write(f"- {SCALER_FILE}")
 
 lr = try_load(LR_FILE)
 svm = try_load(SVM_FILE)
 rf = try_load(RF_FILE)
-scaler = try_load(SCALER_FILE)
 
-if not all([lr, svm, rf, scaler]):
-    st.warning("One or more models or the scaler failed to load. Place them in the path above (joblib .h5 files).")
+if not all([lr, svm, rf]):
+    st.warning("One or more models failed to load. Place them in the path above (joblib .h5 files).")
     st.stop()
-st.success("Models and scaler loaded successfully.")
+st.success("Models loaded successfully.")
 
 # Feature order expected
 FEATURES = ['age', 'sex', 'cp', 'trestbps', 'chol', 'fbs', 'restecg',
@@ -56,7 +53,7 @@ FEATURES = ['age', 'sex', 'cp', 'trestbps', 'chol', 'fbs', 'restecg',
 # uploaded = st.file_uploader("Upload CSV with same columns (target column 'target')", type=['csv'])
 # df = None
 # if uploaded is not None:
-    df = pd.read_csv(uploaded)
+#    df = pd.read_csv(uploaded)
 # else:
 #    if os.path.exists(DEFAULT_DATA_CSV):
 #       try:
@@ -68,7 +65,7 @@ FEATURES = ['age', 'sex', 'cp', 'trestbps', 'chol', 'fbs', 'restecg',
 # scores = {}
 # if df is not None:
 #    if 'target' not in df.columns:
-        st.error("Dataset must include a 'target' column.")
+#        st.error("Dataset must include a 'target' column.")
 #    else:
 #        missing = [c for c in FEATURES if c not in df.columns]
 #        if missing:
@@ -97,21 +94,21 @@ model_choice = st.selectbox("Select model", ["Logistic Regression", "SVM", "Rand
 model_map = {'Logistic Regression': lr, 'SVM': svm, 'Random Forest': rf}
 model = model_map[model_choice]
 
-if scores:
-    st.markdown("#### Evaluation scores (on test split)")
-    sc = scores.get(model_choice)
-    if sc:
-        st.write(f"Accuracy: {sc['accuracy']:.4f}")
-        st.write(f"Precision: {sc['precision']:.4f}")
-        st.write(f"Recall: {sc['recall']:.4f}")
-        st.write(f"F1-score: {sc['f1']:.4f}")
+# if scores:
+#    st.markdown("#### Evaluation scores (on test split)")
+#    sc = scores.get(model_choice)
+#    if sc:
+#        st.write(f"Accuracy: {sc['accuracy']:.4f}")
+#        st.write(f"Precision: {sc['precision']:.4f}")
+#        st.write(f"Recall: {sc['recall']:.4f}")
+#        st.write(f"F1-score: {sc['f1']:.4f}")
 
 st.markdown("### Predict for a single patient")
 
 with st.form("patient_form"):
     c1, c2, c3 = st.columns(3)
     with c1:
-        age = st.number_input("age", 0, 120, 60)
+        age = st.number_input(int("age"))
         sex = st.selectbox("sex (1=male,0=female)", [1, 0], index=0)
         cp = st.number_input("cp (0-3)", 0, 3, 1)
         trestbps = st.number_input("trestbps", 0, 300, 130)
@@ -135,12 +132,6 @@ if submit:
         'fbs': fbs, 'restecg': restecg, 'thalach': thalach, 'exang': exang,
         'oldpeak': oldpeak, 'slope': slope, 'ca': ca, 'thal': thal
     }])
-    try:
-        Xs = scaler.transform(input_df[FEATURES])
-    except Exception as e:
-        st.error(f"Error scaling input (feature order/names must match): {e}")
-        st.stop()
-
     try:
         pred = model.predict(Xs)[0]
     except Exception as e:
