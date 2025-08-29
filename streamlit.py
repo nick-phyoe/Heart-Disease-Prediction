@@ -11,7 +11,7 @@ from sklearn.metrics import accuracy_score, precision_score, recall_score, f1_sc
 st.set_page_config(page_title="Heart Disease Prediction", layout="centered")
 st.title("Heart Disease Prediction — Choose Model & Predict")
 
-# --- Paths (remembered as requested) ---
+# --- Paths 
 MODEL_DIR = '/content/drive/MyDrive/Saved Models'
 LR_FILE = os.path.join(MODEL_DIR, 'logistic_regression.h5')
 SVM_FILE = os.path.join(MODEL_DIR, 'svm.h5')
