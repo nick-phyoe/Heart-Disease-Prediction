@@ -88,7 +88,3 @@ if submit:
     else:
         st.write("Probability/score not available for this model.")
 
-st.markdown("---")
-st.write("Notes:")
-st.write("- This app expects models saved with joblib in the folder: /content/drive/MyDrive/Saved Models")
-st.write("- If you trained SVC and want probabilities, train with probability=True before saving.")
