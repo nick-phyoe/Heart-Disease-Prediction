@@ -3,3 +3,4 @@ pillow==11.3.0
 numpy==2.2.6
 tensorflow==2.20.0
 joblib
+scikit-learn
