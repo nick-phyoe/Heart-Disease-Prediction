@@ -59,7 +59,7 @@ with st.form("f"):
     with c2:
         fbs = st.selectbox("fbs (0/1)", [0,1])
         restecg = st.number_input("restecg (0-2)", 0, 2, 1)
-        thalach = st.number_input("thalach", 0, 400, 150)
+        thalach = st.number_input("thalach(max heart rate)", 0, 400, 150)
         exang = st.selectbox("exang (0/1)", [0,1])
     with c3:
         oldpeak = st.number_input("oldpeak", 0.0, 20.0, 1.0, step=0.1, format="%.1f")
