@@ -78,3 +78,10 @@ if submit:
         st.write("Predicted target:", int(p))
     except Exception as e:
         st.error(f"Prediction failed: {e}")
+
+st.write("Note:") 
+st.write("Target 0 - Lower risk of heart attack.") 
+st.write("Target 1 - Higher risk of heart attack.")
+
+
+
