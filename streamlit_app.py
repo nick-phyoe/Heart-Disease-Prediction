@@ -80,8 +80,8 @@ if submit:
         st.error(f"Prediction failed: {e}")
 
 st.write("Note:") 
-st.write("Target 0 - Lower chance of heart attack.") 
-st.write("Target 1 - Higher chance of heart attack.")
+st.write("Target 0 - LOWER CHANCE OF HEART ATTACK.") 
+st.write("Target 1 - HIGHER CHANCE OF HEART ATTACK.")
 
 
 
